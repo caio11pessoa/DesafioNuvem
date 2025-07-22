@@ -9,7 +9,7 @@ const register = async (req, res) => {
   const error = validationResult(nome, email, senha);
 
   if (error != "") {
-    res.status(400).json({ error });
+    return res.status(400).json({ error });
   }
 
   try {
@@ -30,7 +30,7 @@ const login = async (req, res) => {
   const error = validatonLogin(email, senha)
 
   if (error != "") {
-    res.status(400).json({ error });
+    return res.status(400).json({ error });
   }
   try {
     const user = await prisma.user.findUnique({ where: { email } });
