@@ -32,6 +32,9 @@
   "paths": {
     "/api/auth/register": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "201": {
@@ -65,6 +68,9 @@
     },
     "/api/auth/login": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -98,6 +104,9 @@
     },
     "/api/auth/me": {
       "get": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
