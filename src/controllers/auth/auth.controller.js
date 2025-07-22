@@ -1,6 +1,6 @@
 const prisma = require('../../../prisma/client');
 const bcrypt = require('bcrypt');
-const { validationResult, validatonLogin } = require('./authService')
+const { validationResult, validatonLogin } = require('./auth.service')
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
@@ -26,7 +26,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, senha } = req.body;
-  
+
   const error = validatonLogin(email, senha)
 
   if (error != "") {

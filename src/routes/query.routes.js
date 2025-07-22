@@ -1,6 +1,6 @@
 const express = require('express');
 const auth = require('../middlewares/auth.midddleware');
-const { registerQuery, listQueries } = require('../controllers/query.controller');
+const { registerQuery, listQueries } = require('../controllers/query/query.controller');
 
 const router = express.Router();
 

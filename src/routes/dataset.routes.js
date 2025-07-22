@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { upload, getUserDatasets, getDatasetRecords } = require('../controllers/dataset.controller');
+const { upload, getUserDatasets, getDatasetRecords } = require('../controllers/dataset/dataset.controller');
 const auth = require('../middlewares/auth.midddleware');
 const uploadMidlleware = require('../middlewares/upload.middleware');
 

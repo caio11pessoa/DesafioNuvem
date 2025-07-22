@@ -1,4 +1,4 @@
-const prisma = require('../../prisma/client');
+const prisma = require('../../../prisma/client');
 
 const searchRecords = async (req, res) => {
     const { query } = req.query;
@@ -8,6 +8,10 @@ const searchRecords = async (req, res) => {
     }
 
     try {
+
+        const whereClause = { 
+            usuarioId: req.userId 
+        };
 
         const datasets = await prisma.dataset.findMany({
             where: {

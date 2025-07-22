@@ -1,5 +1,7 @@
-const prisma = require('../../prisma/client');
+const prisma = require('../../../prisma/client');
 const { pipeline } = require('@xenova/transformers');
+const { prepareContext } = require('./query.service')
+
 
 const registerQuery = async (req, res) => {
     const { pergunta, datasetId } = req.body;
@@ -18,10 +20,7 @@ const registerQuery = async (req, res) => {
         if (records.length === 0) {
             return res.status(404).json({ error: 'Nenhum dado encontrado no dataset.' });
         }
-        const contexto = records.map(r => JSON.stringify(r.dadosJson)).join(' ');
-        contexto = contexto.replaceAll("{", "");
-        contexto = contexto.replaceAll("}", "");
-        contexto = contexto.replace("\"", "");
+        const contexto = prepareContext(records)
 
         const questionAnswerer = await pipeline(
             'question-answering',
@@ -29,8 +28,6 @@ const registerQuery = async (req, res) => {
         );
 
         const resposta = await questionAnswerer(pergunta, contexto)
-
-        console.log({ resposta })
 
         const novaQuery = await prisma.query.create({
             data: {
