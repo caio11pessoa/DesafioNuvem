@@ -1,6 +1,6 @@
 const express = require('express');
 const auth = require('../middlewares/auth.midddleware');
-const { searchRecords } = require('../controllers/record.controller');
+const { searchRecords } = require('../controllers/record/record.controller');
 
 const router = express.Router();
 

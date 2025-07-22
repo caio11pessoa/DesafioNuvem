@@ -1,9 +1,16 @@
-const prisma = require('../../prisma/client');
+const prisma = require('../../../prisma/client');
 const bcrypt = require('bcrypt');
+const { validationResult, validatonLogin } = require('./auth.service')
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
   const { nome, email, senha } = req.body;
+
+  const error = validationResult(nome, email, senha);
+
+  if (error != "") {
+    res.status(400).json({ error });
+  }
 
   try {
     const senha_hash = await bcrypt.hash(senha, 10);
@@ -20,6 +27,11 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, senha } = req.body;
 
+  const error = validatonLogin(email, senha)
+
+  if (error != "") {
+    res.status(400).json({ error });
+  }
   try {
     const user = await prisma.user.findUnique({ where: { email } });
 
