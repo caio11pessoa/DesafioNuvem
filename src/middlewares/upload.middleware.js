@@ -1,9 +1,7 @@
-// src/middlewares/upload.middleware.js
 const multer = require('multer');
 const path = require('path');
 const upload = multer({ dest: 'uploads/' })
 
-// Armazena o arquivo localmente na pasta /uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');

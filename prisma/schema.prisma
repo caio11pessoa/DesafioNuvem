@@ -40,7 +40,7 @@ model Dataset {
 model Record {
   id        Int      @id @default(autoincrement())
   datasetId Int
-  dadosJson Json // conteúdo do CSV convertido para JSON
+  dadosJson Json
   criadoEm  DateTime @default(now())
   dataset   Dataset  @relation(fields: [datasetId], references: [id])
 }

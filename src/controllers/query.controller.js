@@ -1,24 +1,6 @@
 const prisma = require('../../prisma/client');
 const { pipeline } = require('@xenova/transformers');
 
-// function gerarRespostaSimulada(pergunta) {
-//     const respostasMock = [
-//         "Não tenho certeza, mas acredito que sim.",
-//         "Essa informação está no dataset!",
-//         "A resposta é 42.",
-//         "Talvez seja necessário mais contexto.",
-//         "Essa é uma excelente pergunta, pense nisso!"
-//     ];
-
-//     // Usa palavra-chave da pergunta (mock)
-//     if (pergunta.toLowerCase().includes("população")) {
-//         return "A população estimada é de 74 mil habitantes.";
-//     }
-
-//     const aleatoria = respostasMock[Math.floor(Math.random() * respostasMock.length)];
-//     return aleatoria;
-// }
-
 const registerQuery = async (req, res) => {
     const { pergunta, datasetId } = req.body;
 
@@ -36,17 +18,11 @@ const registerQuery = async (req, res) => {
         if (records.length === 0) {
             return res.status(404).json({ error: 'Nenhum dado encontrado no dataset.' });
         }
-        // const contexto = records.map(r => JSON.stringify(r.dadosJson)).join(' ');
-        var contexto = records.map(r => {
-            if (typeof r.dadosJson === 'string') {
-                return r.dadosJson;
-            }
-            return JSON.stringify(r.dadosJson);
-        }).join(' ');
+        const contexto = records.map(r => JSON.stringify(r.dadosJson)).join(' ');
         contexto = contexto.replaceAll("{", "");
         contexto = contexto.replaceAll("}", "");
         contexto = contexto.replace("\"", "");
-        console.log({ contexto }, { pergunta })
+
         const questionAnswerer = await pipeline(
             'question-answering',
             'Xenova/distilbert-base-cased-distilled-squad'

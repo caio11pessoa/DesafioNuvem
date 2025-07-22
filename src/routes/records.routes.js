@@ -4,6 +4,6 @@ const { searchRecords } = require('../controllers/record.controller');
 
 const router = express.Router();
 
-router.get('/search', auth, searchRecords); // 👈 Nova rota
+router.get('/search', auth, searchRecords);
 
 module.exports = router;

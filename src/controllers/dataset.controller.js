@@ -91,7 +91,7 @@ const getUserDatasets = async (req, res) => {
                 usuarioId: req.userId
             },
             orderBy: {
-                criadoEm: 'desc' // opcional: para mostrar os mais recentes primeiro
+                criadoEm: 'desc'
             }
         });
 
@@ -103,33 +103,31 @@ const getUserDatasets = async (req, res) => {
 };
 
 const getDatasetRecords = async (req, res) => {
-  const datasetId = parseInt(req.params.id);
+    const datasetId = parseInt(req.params.id);
 
-  try {
-    // Verifica se o dataset pertence ao usuário
-    const dataset = await prisma.dataset.findFirst({
-      where: {
-        id: datasetId,
-        usuarioId: req.userId
-      }
-    });
+    try {
+        const dataset = await prisma.dataset.findFirst({
+            where: {
+                id: datasetId,
+                usuarioId: req.userId
+            }
+        });
 
-    if (!dataset) {
-      return res.status(404).json({ error: 'Dataset não encontrado ou não pertence ao usuário.' });
+        if (!dataset) {
+            return res.status(404).json({ error: 'Dataset não encontrado ou não pertence ao usuário.' });
+        }
+
+        const records = await prisma.record.findMany({
+            where: {
+                datasetId: dataset.id
+            }
+        });
+
+        res.status(200).json(records);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar os registros.' });
     }
-
-    // Busca os records associados
-    const records = await prisma.record.findMany({
-      where: {
-        datasetId: dataset.id
-      }
-    });
-
-    res.status(200).json(records);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao buscar os registros.' });
-  }
 };
 
 
