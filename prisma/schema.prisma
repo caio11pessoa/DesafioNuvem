@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  nome       String
+  email      String    @unique
+  senha_hash String
+  datasets   Dataset[]
+  createdAt  DateTime  @default(now())
+
+  Query Query[]
+}
+
+model Dataset {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  nomeArquivo String
+  tamanho     Int
+  criadoEm    DateTime @default(now())
+  usuarioId   Int
+  usuario     User     @relation(fields: [usuarioId], references: [id])
+  records     Record[]
+
+  Query Query[]
+}
+
+model Record {
+  id        Int      @id @default(autoincrement())
+  datasetId Int
+  dadosJson Json // conteúdo do CSV convertido para JSON
+  criadoEm  DateTime @default(now())
+  dataset   Dataset  @relation(fields: [datasetId], references: [id])
+}
+
+model Query {
+  id        Int      @id @default(autoincrement())
+  pergunta  String
+  resposta  String
+  dataset   Dataset? @relation(fields: [datasetId], references: [id])
+  datasetId Int?
+  usuario   User     @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  createdAt DateTime @default(now())
+}
